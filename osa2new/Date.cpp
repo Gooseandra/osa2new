@@ -3,6 +3,7 @@
 
 using namespace std;
 
+
 class Date {
 private:
     int day, month, year;
@@ -16,6 +17,11 @@ private:
                 return false;
         }
         return true;
+    }
+
+    bool dayAndMonthValueCheck(int day, int month) {
+
+        return false;
     }
 
 public:
@@ -80,12 +86,8 @@ public:
         strDate[i + 1] = '\0';
     }
 
-    char* getStr() {
-        char toReturn[256];
-        for (int i = 0; i < sizeof(strDate); i++) {
-            toReturn[i] = strDate[i];
-        }
-        return toReturn;
+    string getStr() {
+        return string(strDate);
     }
 
     int getDay() {
