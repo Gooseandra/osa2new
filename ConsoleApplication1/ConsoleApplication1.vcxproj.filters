@@ -15,16 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="osa2new.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="Date.h">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="Adress.h">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="Person.h">
+    <ClCompile Include="ConsoleApplication1.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

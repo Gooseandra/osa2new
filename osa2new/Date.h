@@ -87,6 +87,11 @@ public:
     }
 
     string getStr() {
+        if (strDate[1] == 'Ì') {
+            stringstream sstr;
+            sstr << day << "." << month << "." << year << '\0';
+            sstr >> strDate;
+        }
         return string(strDate);
     }
 

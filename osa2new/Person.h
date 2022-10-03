@@ -1,6 +1,6 @@
 #include<iostream>
-#include"Adress.cpp"
-#include"Date.cpp"
+#include"Adress.h"
+#include"Date.h"
 
 using namespace std;
 
