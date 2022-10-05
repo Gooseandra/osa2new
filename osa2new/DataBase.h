@@ -8,6 +8,7 @@
 #include <string>
 #include <cstring>
 
+
 bool compareDay(Person a, Person b) {
     return a.getDate().getDay() < b.getDate().getDay();
 }
