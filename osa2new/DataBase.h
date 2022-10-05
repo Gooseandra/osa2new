@@ -8,6 +8,18 @@
 #include <string>
 #include <cstring>
 
+bool compareDay(Person a, Person b) {
+    return a.getDate().getDay() < b.getDate().getDay();
+}
+
+bool compareMonth(Person a, Person b) {
+    return a.getDate().getDay() < b.getDate().getDay();
+}
+
+bool compareYear(Person a, Person b) {
+    return a.getDate().getDay() < b.getDate().getDay();
+}
+
 class DataBase {
 private:
     vector<Person> v;
@@ -47,18 +59,6 @@ private:
             break;
         }
         cout << endl << S << endl;
-    }
-
-    bool compareDay(Person a, Person b) {
-        return a.getDate().getDay() < b.getDate().getDay();
-    }
-
-    bool compareMonth(Person a, Person b) {
-        return a.getDate().getDay() < b.getDate().getDay();
-    }
-
-    bool compareYear(Person a, Person b) {
-        return a.getDate().getDay() < b.getDate().getDay();
     }
 
 public:
@@ -158,4 +158,3 @@ public:
         return v;
     }
 };
-#pragma once
