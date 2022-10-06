@@ -61,7 +61,29 @@ public:
         return flat;
     }
 
+    void putCountry(string country) {
+        this->country = country;
+    }
 
+    void putCity(string city) {
+        this->city = city;
+    }
+
+    void putStreet(string street) {
+        this->street = street;
+    }
+
+    void putHouse(int house) {
+        this->house = house;
+    }
+
+    void putBilding(int bilding) {
+        this->bilding = bilding;
+    }
+
+    void putFlat(int flat) {
+        this->flat = flat;
+    }
 
     string getAdressStr() {
         stringstream sstr;

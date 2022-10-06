@@ -82,17 +82,30 @@ private:
 
     void load() {
         ifstream file;
+        int counter = 0;
         cout << "Загрузка данных...\n";
         file.open("bin.test", ios::binary);
-        v[0].putName(load_string(file));
-        cout << v[0].getName();
+        while (counter <= 2) {
+            Person p;
+            v.push_back(p);
+            v[counter].putName(load_string(file));
+            v[counter].getDate().putDay(load_int(file));
+            v[counter].getDate().putMonth(load_int(file));
+            v[counter].getDate().putYear(load_int(file));
+            v[counter].getAdress().putCountry(load_string(file));
+            v[counter].getAdress().putCity(load_string(file));
+            v[counter].getAdress().putStreet(load_string(file));
+            v[counter].getAdress().putHouse(load_int(file));
+            v[counter].getAdress().putBilding(load_int(file));
+            v[counter].getAdress().putFlat(load_int(file));
+            counter++;
+        }
     }
 
 public:
     void add(Person p) {
         v.push_back(p);
         save();
-        load();
     }
 
     void remove(int index) {

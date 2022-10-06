@@ -16,6 +16,8 @@ public:
         this->date = date;
     }
 
+    Person(){}
+
     string getName() {
         return name;
     }

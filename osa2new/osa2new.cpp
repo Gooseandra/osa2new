@@ -73,8 +73,9 @@ int main(int count, char** params)
         }
         else if (std::string(params[1]) == "show") {
             mainV = db.getDB();
-            for (int i = 0; i < mainV.size() - 1; i++) {
-                cout << mainV[i].getName() << endl << mainV[i].getDate().getStr() << endl << mainV[i].getAdress().getAdressStr();
+            for (int i = 0; i <= mainV.size() - 1; i++) {
+                cout << mainV[i].getName() << endl << mainV[i].getDate().getStr() << endl 
+                    << mainV[i].getAdress().getAdressStr() << endl << endl;
             }
             string n = mainV[0].getName();
             cout << endl << n;
