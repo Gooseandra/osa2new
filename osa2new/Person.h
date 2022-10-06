@@ -28,6 +28,10 @@ public:
         return adress;
     }
 
+    void putName(string name) {
+        this->name = name;
+    }
+
     string getInfoStr() {
         stringstream sstr;
         sstr << "Имя: " << name << "\nДата рождения: " << date.getStr() << "\nАдрес: " << adress.getAdressStr();

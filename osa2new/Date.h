@@ -107,4 +107,16 @@ public:
         return year;
     }
 
+    void putDay(int day) {
+        this->day = day;
+    }
+
+    void putMonth(int month) {
+        this->month = month;
+    }
+
+    void putYear(int year) {
+        this->year = year;
+    }
+
 };

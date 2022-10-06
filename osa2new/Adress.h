@@ -61,6 +61,8 @@ public:
         return flat;
     }
 
+
+
     string getAdressStr() {
         stringstream sstr;
         sstr << country << ", г." << city << ", ул." << street << ", д." << house;

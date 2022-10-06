@@ -25,56 +25,85 @@ class DataBase {
 private:
     vector<Person> v;
 
-    void saveArg(ofstream& out, string arg) {
-        int length = arg.length();
+    void save_string(std::ofstream& out, std::string str) {
+        int length = str.length();
         out.write(reinterpret_cast<char*>(&length), sizeof(length));
-        out << arg.c_str();
+        out << str.c_str();
+    }
+
+    void save_int(std::ofstream& out, int val) {
+        out.write(reinterpret_cast<char*>(&val), sizeof(val));
+    }
+
+    void saving(std::ofstream& file) {
+        for (int i = 0; i < v.size(); i++) {
+            save_string(file, v[i].getName());
+            save_int(file, v[i].getDate().getDay());
+            save_int(file, v[i].getDate().getMonth());
+            save_int(file, v[i].getDate().getYear());
+            save_string(file, v[i].getAdress().getCountry());
+            save_string(file, v[i].getAdress().getCity());
+            save_string(file, v[i].getAdress().getStreet());
+            save_int(file, v[i].getAdress().getHouse());
+            save_int(file, v[i].getAdress().getBilding());
+            save_int(file, v[i].getAdress().getFlat());
+        }
     }
 
     void save() {
         ofstream file;
         cout << "Сохраняю...\n";
         file.open("bin.test", ios::binary | ios::app);
-        for (int i = 0; i < v.size(); i++) {
-            saveArg(file, v[i].getName());
-            saveArg(file, to_string(v[i].getDate().getDay()));
-            saveArg(file, to_string(v[i].getDate().getMonth()));
-            saveArg(file, to_string(v[i].getDate().getYear()));
-            saveArg(file, v[i].getAdress().getCountry());
-            saveArg(file, v[i].getAdress().getCity());
-            saveArg(file, v[i].getAdress().getStreet());
-            saveArg(file, to_string(v[i].getAdress().getHouse()));
-            saveArg(file, to_string(v[i].getAdress().getBilding()));
-            saveArg(file, to_string(v[i].getAdress().getFlat()));
-        }
+        saving(file);
         file.close();
+    }
+
+    void saveNew() {
+        ofstream file;
+        cout << "Сохраняю...\n";
+        file.open("bin.test", ios::binary);
+        saving(file);
+        file.close();
+    }
+
+    std::string load_string(std::ifstream& in) {
+        int length;
+        in.read(reinterpret_cast<char*>(&length), sizeof(length));
+        std::string buffer(length, '\x0');
+        in.read(&buffer[0], length);
+        return buffer;
+    }
+
+    int load_int(std::ifstream& in) {
+        int val;
+        in.read(reinterpret_cast<char*>(&val), sizeof(val));
+        return val;
     }
 
     void load() {
         ifstream file;
         cout << "Загрузка данных...\n";
         file.open("bin.test", ios::binary);
-        char S[255] = {};
-        while (!file.eof()) {
-            file.read((char*)&S, 1);
-            break;
-        }
-        cout << endl << S << endl;
+        v[0].putName(load_string(file));
+        cout << v[0].getName();
     }
 
 public:
     void add(Person p) {
         v.push_back(p);
         save();
+        load();
     }
 
     void remove(int index) {
         v.erase(v.begin() + index);
+        saveNew();
     }
 
     vector<int> search(string searchField, string word) {
         int i;
         vector<int> toReturn;
+        load();
         if (searchField == "name") {// имя 
             for (i = 0; i < v.size(); i++) {
                 if (v[i].getName() == word) {
@@ -134,16 +163,19 @@ public:
     }
 
     Person getByIndex(int index) {
+        load();
         return v[index];
     }
 
     void show() {
+        load();
         for (int i = 0; i < v.size() - 1; i++) {
             cout << v[i].getName() << endl << v[i].getDate().getStr() << endl << v[i].getAdress().getAdressStr();
         }
     }
 
     vector<Person> sortDB(string sortField) {
+        load();
         if (sortField == "day") {
             sort(v.begin(), v.end(), compareDay);
         }
@@ -156,6 +188,7 @@ public:
     }
 
     vector<Person> getDB() {
+        load();
         return v;
     }
 };
