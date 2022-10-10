@@ -34,6 +34,10 @@ public:
         this->name = name;
     }
 
+    void putDate(Date d) {
+        date = d;
+    }
+
     string getInfoStr() {
         stringstream sstr;
         sstr << "Имя: " << name << "\nДата рождения: " << date.getStr() << "\nАдрес: " << adress.getAdressStr();

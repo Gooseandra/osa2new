@@ -77,8 +77,6 @@ int main(int count, char** params)
                 cout << mainV[i].getName() << endl << mainV[i].getDate().getStr() << endl 
                     << mainV[i].getAdress().getAdressStr() << endl << endl;
             }
-            string n = mainV[0].getName();
-            cout << endl << n;
         }
         else {
             std::cout << "none" << endl;

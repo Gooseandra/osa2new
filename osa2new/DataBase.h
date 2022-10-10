@@ -33,6 +33,7 @@ private:
 
     void save_int(std::ofstream& out, int val) {
         out.write(reinterpret_cast<char*>(&val), sizeof(val));
+        out << val;
     }
 
     void saving(std::ofstream& file) {
@@ -86,18 +87,19 @@ private:
         cout << "Загрузка данных...\n";
         file.open("bin.test", ios::binary);
         while (counter <= 2) {
-            Person p;
-            v.push_back(p);
-            v[counter].putName(load_string(file));
-            v[counter].getDate().putDay(load_int(file));
-            v[counter].getDate().putMonth(load_int(file));
-            v[counter].getDate().putYear(load_int(file));
-            v[counter].getAdress().putCountry(load_string(file));
-            v[counter].getAdress().putCity(load_string(file));
-            v[counter].getAdress().putStreet(load_string(file));
-            v[counter].getAdress().putHouse(load_int(file));
-            v[counter].getAdress().putBilding(load_int(file));
-            v[counter].getAdress().putFlat(load_int(file));
+            std::string name = load_string(file);
+            Date date;
+            date.putDay(load_int(file));
+            date.putMonth(load_int(file));
+            date.putYear(load_int(file));
+            Adress adress;
+            adress.putCountry(load_string(file));
+            adress.putCity(load_string(file));
+            adress.putStreet(load_string(file));
+            adress.putHouse(load_int(file));
+            adress.putBilding(load_int(file));
+            adress.putFlat(load_int(file));
+            v.push_back(Person(adress, date, name));
             counter++;
         }
     }
