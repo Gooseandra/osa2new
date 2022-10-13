@@ -65,31 +65,86 @@ int main(int count, char** params)
     SetConsoleOutputCP(1251);
     DataBase db;
     vector<Person> mainV;
+    system("cls");
     if (count == 2) {
         if (std::string(params[1]) == "add") {
             Person p(adressCreator(), dateCreator(), nameCreator());
             std::cout << endl << p.getInfoStr() << endl;
             db.add(p);
+            system("pause");
         }
         else if (std::string(params[1]) == "show") {
             mainV = db.getDB();
             for (int i = 0; i <= mainV.size() - 1; i++) {
-                cout << mainV[i].getName() << endl << mainV[i].getDate().getStr() << endl 
+                cout << mainV[i].getName() << endl << mainV[i].getDate().getStr() << endl
                     << mainV[i].getAdress().getAdressStr() << endl << endl;
             }
+            system("pause");
+        }
+        else if (std::string(params[1]) == "help") {
+            cout << "add - добавить элемент\nshow - вывести на экране все элементы\n" <<
+                "search <наименование поля> <значение поля> - поиск элемента\n" <<
+                "remove <индекс элемента> - удалить элемент\n" <<
+                "sortmax <поле> - сортировка данных по возрастанию поля\n" <<
+                "sortmin <поле> - сортировка данных по убыванию поля\n" <<
+                "min/max <наименование поля> - вывести на экран меньшее/большее значение поля" <<
+                "search like <наименование поля> <строка для поиска> - поиск похожих элементов на строку для поиска\n";
+            system("pause");
         }
         else {
             std::cout << "none" << endl;
+            system("pause");
         }
-    if (count == 4)
+    }
+    else if (count == 3) {
+        if (std::string(params[1]) == "remove") {
+            db.remove(int(params[2]));
+        }
+        else if (std::string(params[1]) == "sortmax") {
+            db.sortDB(params[2]);
+            db.saveNew();
+        }
+        else if (std::string(params[1]) == "sortmin") {
+            db.sortDB(params[2]);
+            db.reverseV();
+            db.saveNew();
+        }
+        else if (std::string(params[1]) == "min") {
+            Person p = db.getMin(params[2]);
+            cout << p.getInfoStr();
+            system("pause");
+        }
+        else if (std::string(params[1]) == "max") {
+            Person p = db.getMax(params[2]);
+            cout << p.getInfoStr();
+            system("pause");
+        }
+    }
+    else if (count == 4){
         if (std::string(params[1]) == "search") {
             vector<int> indexV = db.search(params[2], params[3]);
-            for (int i = 0; i < indexV.size() - 1; i++) {
-                cout << indexV[i] << ", ";
+            for (int i = 0; i < indexV.size(); i++) {
+                cout << indexV[i] << " ";
             }
+            system("pause");
+        }
+    }
+    else if (count == 5) {
+        if (std::string(params[1]) == "search" && std::string(params[2]) == "like") {
+            vector<int> indexV = db.searchLikeManager(params[3], params[4]);
+            if (indexV.size() == 0) {
+                cout << "Ничего не найдено\n";
+                return 0;
+            }
+            for (int i = 0; i < indexV.size(); i++) {
+                cout << indexV[i] << " ";
+            }
+            system("pause");
         }
     }
     else {
         std::cout << "не" << endl;
+        system("pause");
+        return 0;
     }
 }

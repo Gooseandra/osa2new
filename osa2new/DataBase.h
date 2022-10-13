@@ -33,8 +33,13 @@ private:
 
     void save_int(std::ofstream& out, int val) {
         out.write(reinterpret_cast<char*>(&val), sizeof(val));
-        out << val;
     }
+
+    bool is_empty(std::ifstream& pFile)
+    {
+        return pFile.peek() == std::ifstream::traits_type::eof();
+    }
+
 
     void saving(std::ofstream& file) {
         for (int i = 0; i < v.size(); i++) {
@@ -49,23 +54,28 @@ private:
             save_int(file, v[i].getAdress().getBilding());
             save_int(file, v[i].getAdress().getFlat());
         }
+        //save_string(file, "0");
     }
 
     void save() {
         ofstream file;
+        //ifstream isFileEmpty;
         cout << "Сохраняю...\n";
+       // isFileEmpty.open("bin.test");
         file.open("bin.test", ios::binary | ios::app);
-        saving(file);
+       // if (is_empty(isFileEmpty) == true) {
+            saving(file);
+        //}
+        //else {
+     /*       file.seekp(file.end);
+            long pos = file.tellp();
+            file.seekp(pos - 1);
+            save_string(file, "");
+            saving(file);
+        }*/
         file.close();
     }
 
-    void saveNew() {
-        ofstream file;
-        cout << "Сохраняю...\n";
-        file.open("bin.test", ios::binary);
-        saving(file);
-        file.close();
-    }
 
     std::string load_string(std::ifstream& in) {
         int length;
@@ -85,8 +95,8 @@ private:
         ifstream file;
         int counter = 0;
         cout << "Загрузка данных...\n";
-        file.open("bin.test", ios::binary);
-        while (counter <= 2) {
+        file.open("bin.test", ios::binary | ios::in);
+        while (counter != 3) {
             std::string name = load_string(file);
             Date date;
             date.putDay(load_int(file));
@@ -105,12 +115,21 @@ private:
     }
 
 public:
+    void saveNew() {
+        ofstream file;
+        cout << "Сохраняю...\n";
+        file.open("bin.test", ios::binary);
+        saving(file);
+        file.close();
+    }
+
     void add(Person p) {
         v.push_back(p);
         save();
     }
 
     void remove(int index) {
+        load();
         v.erase(v.begin() + index);
         saveNew();
     }
@@ -177,6 +196,77 @@ public:
         return toReturn;
     }
 
+    bool searchLike(string wordToFind, string word) {
+        int i = 0, u = 0, q = 0;
+        int ssize = word.length();
+        char* parseWord = new char[ssize + 1];
+        bool add = false;
+        word.copy(parseWord, ssize);
+        parseWord[ssize] = '\0';
+
+        char* info = new char[wordToFind.length()];
+        wordToFind.copy(info, wordToFind.length() + 1);
+        info[wordToFind.length()] = '\0';
+
+        for (u; u < wordToFind.length(); u++) {
+            for (q; q < ssize; q++) {
+                if (u + q > wordToFind.length()) {
+                    break;
+                    break;
+                }
+                if (parseWord[q] != info[u + q]) {
+                    add = false;
+                    break;
+                }
+                if (q == ssize - 1)
+                    add = true;
+            }
+            if (add == true) {
+                delete[] parseWord;
+                return true;
+                break;
+            }
+
+        }
+        return false;
+    }
+
+    vector<int> searchLikeManager(string searchField, string word) {
+        vector<int> indexes;
+        load();
+        if (searchField == "name") {
+            for (int i = 0; i < v.size(); i++) {
+                if (searchLike(v[i].getName(), word) == true)
+                    indexes.push_back(i);
+            }
+        }
+        else if (searchField == "date") {
+            for (int i = 0; i < v.size(); i++) {
+                if (searchLike(v[i].getDate().getStr(), word) == true)
+                    indexes.push_back(i);
+            }
+        }
+        else if (searchField == "country") {
+            for (int i = 0; i < v.size(); i++) {
+                if (searchLike(v[i].getAdress().getCountry(), word) == true)
+                    indexes.push_back(i);
+            }
+        }
+        else if (searchField == "city") {
+            for (int i = 0; i < v.size(); i++) {
+                if (searchLike(v[i].getAdress().getCity(), word) == true)
+                    indexes.push_back(i);
+            }
+        }
+        else if (searchField == "street") {
+            for (int i = 0; i < v.size(); i++) {
+                if (searchLike(v[i].getAdress().getStreet(), word) == true)
+                    indexes.push_back(i);
+            }
+        }
+        return indexes;
+    }
+
     Person getByIndex(int index) {
         load();
         return v[index];
@@ -189,7 +279,7 @@ public:
         }
     }
 
-    vector<Person> sortDB(string sortField) {
+    void sortDB(string sortField) {
         load();
         if (sortField == "day") {
             sort(v.begin(), v.end(), compareDay);
@@ -202,6 +292,20 @@ public:
         }
     }
 
+    void reverseV() {
+        reverse(v.begin(), v.end());
+    }
+
+    Person getMin(string minField) {
+        sortDB(minField);
+        return v[0];
+    }
+
+    Person getMax(string maxField) {
+        sortDB(maxField);
+        return v[v.size() - 1];
+    }
+    
     vector<Person> getDB() {
         load();
         return v;
